@@ -1,8 +1,10 @@
 const Produtos = require("../models/Produtos")
 
 const produtoController = {
-    listarProduto: (req, res) => {
-        res.json([{ nome: "Produto 1"},{nome:"Produto 2"}]);
+    listarProduto: async (req, res) => {
+
+        const listaDeProdutos = await Produtos.findAll();
+        res.json(listaDeProdutos);
     },
 
   async  cadastrarProduto(req,res){
