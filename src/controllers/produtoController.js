@@ -17,6 +17,17 @@ const produtoController = {
         });
         res.json(novoProduto);
     },
+
+    async deletarProduto(req,res){
+        const {id} = req.params;
+
+        await Produtos.destroy({
+            where:{
+                id,
+            }
+        });
+        res.json("Produto Deletado");
+    }
 };
 
 module.exports = produtoController;
