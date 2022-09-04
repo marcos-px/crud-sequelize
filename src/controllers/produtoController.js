@@ -1,23 +1,28 @@
-const { Produtos, Fabricantes } = require("../models")
+const { Produtos, Fabricantes } = require("../models");
+const Categorias = require("../models/Categorias");
 
 const produtoController = {
     listarProduto: async (req, res) => {
 
         const listaDeProdutos = await Produtos.findAll({
-            include: Fabricantes
+            include: Categorias
         });
         res.json(listaDeProdutos);
     },
 
   async  cadastrarProduto(req,res){
-        const {nome, preco, quantidade, fabricante_id} = req.body;
+        const {nome, preco, quantidade, fabricante_id, categoria_id} = req.body;
 
         const novoProduto = await Produtos.create({
             nome, 
             preco, 
             quantidade,
-            fabricante_id
+            fabricante_id,
         });
+
+        const categoria = await Categorias.findByPk(categoria_id);
+
+        await novoProduto.setCategorias(categoria); //o nome do model
         res.json(novoProduto);
     },
 
