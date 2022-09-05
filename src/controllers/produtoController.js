@@ -23,24 +23,30 @@ const produtoController = {
         const categoria = await Categorias.findByPk(categoria_id);
 
         await novoProduto.setCategorias(categoria); //o nome do model
-        res.json(novoProduto);
+        res.status(201).json(novoProduto);
     },
 
     async deletarProduto(req,res){
-        const {id} = req.params;
+        try{
+            const {id} = req.params;
 
-        await Produtos.destroy({
-            where:{
-                id,
-            }
-        });
-        res.json("Produto Deletado");
+            await Produtos.destroy({
+                where:{
+                    id,
+                }
+            });
+            res.status(204);
+        } catch(err){
+            return res.status(500).json("Ocorreu um erro, contate o master")
+        }
     },
 
     async atualizarProduto(req,res){
         const {id} = req.params;
         const dados = "{nome, preco, quantidade}";
         const {nome, preco, quantidade} = req.body;
+
+        if (!id) return res.status(400).json("id não enviado");
         const produtoAtualizado = await Produtos.update({
             nome, 
             preco, 
