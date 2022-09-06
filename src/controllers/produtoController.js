@@ -11,6 +11,9 @@ const produtoController = {
     },
 
   async  cadastrarProduto(req,res){
+        console.log(req.user)// retorna o usuario que está usando o token
+
+        
         const {nome, preco, quantidade, fabricante_id, categoria_id} = req.body;
 
         const novoProduto = await Produtos.create({

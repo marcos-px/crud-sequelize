@@ -1,4 +1,6 @@
 const {Usuarios} = require("../models")
+const jwt = require("jsonwebtoken")
+const secret = require("../configs/secret")
 const bcrypt = require("bcryptjs")
 
 const AuthController = {
@@ -19,7 +21,16 @@ const AuthController = {
         return res.status(401).json("Senha Inválida!")
     }
 
-    return res.json("Logado!")
+    const token  = jwt.sign({
+        id:usuario.id, 
+        email:usuario.email, 
+        nome:usuario.nome,
+        userType: "admin"
+    },
+    secret.key
+    );
+
+    return res.json(token)
     },
 };
 
